@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'home_screen.dart'; // Импортируйте ваш главный экран
 
 class LoginScreen extends StatelessWidget {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  // Предопределенные учетные данные для тестового аккаунта
+  final String testUsername = '@testuser';
+  final String testPassword = 'password123';
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +49,33 @@ class LoginScreen extends StatelessWidget {
             ),
             ElevatedButton(
               onPressed: () {
-                // Добавьте логику для авторизации
+                if (usernameController.text == testUsername &&
+                    passwordController.text == testPassword) {
+                  // Переход на главный экран после успешного входа
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                  );
+                } else {
+                  // Показать сообщение об ошибке, если данные неверны
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('Ошибка входа'),
+                        content: Text('Неверные учетные данные. Попробуйте снова.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
               },
               child: Text('Войти'),
             ),
